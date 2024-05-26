@@ -11,15 +11,77 @@ import { REGISTER_SCHEMA } from "@/lib/schema";
 import { useFormik } from "formik";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/config/firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "@/firebase/config/firebase";
+import { useState } from "react";
 
 const debug = true;
 
-function Login() {
+function Register() {
   const router = useRouter();
   const { toast } = useToast();
 
+  // ! single state object to handle loading
+  const [loading, setLoading] = useState({ google: false, github: false });
+
+  // ! function triggered upon clicking the google button
+  const handleGoogleSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading((prev) => ({ ...prev, google: true }));
+
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      debug && console.log(result);
+
+      router.replace("/");
+
+      toast({
+        title: "Signed in with Google",
+        action: <ToastAction altText="close the toast">Close</ToastAction>,
+      });
+    } catch (err) {
+      debug && console.error(err.message);
+
+      toast({
+        title: "Authentication error",
+        description: `${err.message}`,
+        action: <ToastAction altText="auth error">Close</ToastAction>,
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, google: false }));
+    }
+  };
+
+  // ! function triggered upon clicking the github button
+  const handleGithubSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading((prev) => ({ ...prev, github: true }));
+
+    try {
+      // Replace with actual GitHub sign-in logic
+      const result = await signInWithPopup(auth, githubProvider);
+      debug && console.log(result);
+
+      router.replace("/");
+
+      toast({
+        title: "Signed in with Github",
+        action: <ToastAction altText="close the toast">Close</ToastAction>,
+      });
+    } catch (err) {
+      debug && console.error(err.message);
+
+      toast({
+        title: "Authentication error",
+        description: `${err.message}`,
+        action: <ToastAction altText="auth error">Close</ToastAction>,
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, github: false }));
+    }
+  };
+
+  // ! perform form handling here . . .
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -37,10 +99,8 @@ function Login() {
         );
 
         debug && console.log(response);
-
-        // ! 1) navigate to the sign-in
-        router.replace("/sign-in");
-
+        // ! 1) redirect the user to the root
+        router.replace("/");
         // ! 2) then display the toast
         toast({
           title: "User Registered Successfully",
@@ -49,12 +109,15 @@ function Login() {
       } catch (err) {
         debug && console.error(err.message);
 
-        // ! toast set here
         toast({
           title: "Authentication error",
-          description: `${err.messaage}`,
+          description: `${err.message}`,
           action: <ToastAction altText="auth error">Retry</ToastAction>,
         });
+      } finally {
+        // ! perform clean up here . . .
+        setSubmitting(false);
+        resetForm();
       }
     },
   });
@@ -72,7 +135,6 @@ function Login() {
         className="h-full w-full flex items-center justify-center flex-col"
         onSubmit={formik.handleSubmit}
       >
-        {/* // ! header goes here . . . */}
         <div className="flex flex-col space-y-4 items-center mb-8">
           <h3 className="text-black font-semibold text-2xl lg:text-3xl">
             Create an account
@@ -116,7 +178,6 @@ function Login() {
           )}
         </Button>
 
-        {/* // ! separator goes here . . . */}
         <div className="flex flex-row items-center justify-center my-6">
           <Separator className="hidden lg:flex w-[150px]" />
           <p className="text-[15px] text-gray-500/90 font-medium mx-3 text-center">
@@ -125,20 +186,25 @@ function Login() {
           <Separator className="hidden lg:flex w-[150px]" />
         </div>
 
-        {/* // ! oAuth button goes here */}
         <div className="flex flex-col lg:flex-row items-center justify-between w-full lg:w-[440px] xl:w-[500px] gap-3">
           <Button
             className="w-full p-6 text-[15px] font-medium"
             variant="outline"
+            onClick={(e) => handleGoogleSignIn(e)}
+            // ! passing the event to prevent default behavior of the form
           >
             <p className="text-black text-[15px] font-medium flex items-center gap-3">
               <FaGoogle />
-              Google
+              {loading.google ? <div className="loader"></div> : "Google"}
             </p>
           </Button>
-          <Button className="w-full flex items-center gap-3 p-6 text-[15px] font-medium">
+          <Button
+            className="w-full flex items-center gap-3 p-6 text-[15px] font-medium"
+            onClick={(e) => handleGithubSignIn(e)}
+            // ! passing the event to prevent default behavior of the form
+          >
             <FaGithub className="w-[16px] h-[16px]" />
-            Github
+            {loading.github ? <div className="loader"></div> : "Github"}
           </Button>
         </div>
       </form>
@@ -146,4 +212,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
