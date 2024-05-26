@@ -1,27 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ToastAction } from "@/components/ui/toast";
-import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/context/auth-context";
 import React from "react";
+import withAuth from "@/lib/withAuth";
 
 function Home() {
+  const { user, logout } = useAuth();
+
   return (
-    <Button
-      onClick={() => {
-        toast({
-          title: "Scheduled: Catch up ",
-          description: "Friday, February 10, 2023 at 5:57 PM",
-          action: (
-            <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
-          ),
-        });
-      }}
-      variant="default"
-    >
-      Toast
-    </Button>
+    <>
+      <div>{JSON.stringify(user)}</div>
+      <Button onClick={() => logout()}>Click me</Button>
+    </>
   );
 }
 
-export default Home;
+export default withAuth(Home);
