@@ -131,15 +131,19 @@ function Login() {
           )}
         </Button>
 
-        <div className="flex flex-row items-center justify-center my-6">
+        <Button variant="link" className="my-4">
+          Forget Password ?
+        </Button>
+
+        {/* <div className="flex flex-row items-center justify-center my-4">
           <Separator className="hidden lg:flex w-[150px]" />
           <p className="text-[15px] text-gray-500/90 font-medium mx-3 text-center">
             {"or continue with".toUpperCase()}
           </p>
           <Separator className="hidden lg:flex w-[150px]" />
-        </div>
+        </div> */}
 
-        <div className="flex flex-col lg:flex-row items-center justify-between w-full lg:w-[440px] xl:w-[500px] gap-3">
+        {/* <div className="flex flex-col lg:flex-row items-center justify-between w-full lg:w-[440px] xl:w-[500px] gap-3">
           <Button
             className="w-full p-6 text-[15px] font-medium"
             variant="outline"
@@ -153,7 +157,7 @@ function Login() {
             <FaGithub className="w-[16px] h-[16px]" />
             Github
           </Button>
-        </div>
+        </div> */}
       </form>
     </AuthLayout>
   );
