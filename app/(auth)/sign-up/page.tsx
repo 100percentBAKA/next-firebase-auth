@@ -38,13 +38,14 @@ function Login() {
 
         debug && console.log(response);
 
-        // ! toast goes here . . .
+        // ! 1) navigate to the sign-in
+        router.replace("/sign-in");
+
+        // ! 2) then display the toast
         toast({
           title: "User Registered Successfully",
           action: <ToastAction altText="close the toast">Close</ToastAction>,
         });
-
-        router.replace("/sign-in");
       } catch (err) {
         debug && console.error(err.message);
 
@@ -63,7 +64,7 @@ function Login() {
       <Button
         className="self-end text-[15px] font-medium"
         variant="ghost"
-        onClick={() => router.push("/sign-in")} 
+        onClick={() => router.push("/sign-in")}
       >
         Login
       </Button>

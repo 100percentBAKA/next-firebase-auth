@@ -41,16 +41,14 @@ function Login() {
         debug && console.log(response);
 
         if (response) {
-          // ! setting cookies here . . .
+          // ! 1) redirect to the home screen
+          router.replace("/");
 
-          // ! setting success toast here . . .
+          // ! 2) setting success toast here . . .
           toast({
             title: "User Logged in Successfully",
             action: <ToastAction altText="close the toast">Close</ToastAction>,
           });
-
-          // ! redirect to the home screen
-          router.replace("/");
         }
       } catch (err) {
         console.error(err.message);
