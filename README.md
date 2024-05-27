@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Authentication and Authorization Template with Firebase
+
+This template provides a basic setup for authentication and authorization using Firebase as a Backend-as-a-Service (BaaS) in a Next.js application.
+
+## Features
+
+- Email and Password Authentication
+- Google Sign-In
+- Github Sign-In
+- User Registration
+- Protected Routes
+
+## Prerequisites
+
+- Node.js and npm installed
+- A Firebase project
 
 ## Getting Started
 
-First, run the development server:
+### 1. Set up a Firebase Project
+
+1. Go to the [Firebase Console](https://console.firebase.google.com/).
+2. Click on **Add project**.
+3. Follow the on-screen instructions to create a new Firebase project.
+
+Once your Firebase project is created, proceed to add Firebase to your web app:
+
+4. Go to **Project settings**.
+5. In the **Your apps** section, click on the **</> (Web)** icon to create a new web app.
+6. Register your app with a nickname and click **Register app**.
+7. Firebase will provide you with your Firebase configuration.
+
+### 2. Configure Firebase in Your Next.js Project
+
+Create a `.env.local` file in the root of your Next.js project and add your Firebase configuration details:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
 ```
+Replace the placeholder values (`your_api_key`, `your_project_id`, etc.) with your actual Firebase project credentials.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Install All Dependencies and start the web server
+```bash
+npm i
+npm run dev
+```
+## Stack Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js**: A React framework for production.
+- **Firebase**: Backend-as-a-Service for authentication, database, and more.
+- **Formik**: For form handling and validation.
+- **Yup**: For schema validation.
+- **React Icons**: For using icons in React.
+- **Tailwind CSS**: For styling the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Contributing
+- Fork the repository.
+- Clone your fork.
+- Create a new branch for your feature or bug fix.
+- Commit your changes.
+- Push to your fork and submit a pull request.
 
-## Learn More
+## Screenshots
 
-To learn more about Next.js, take a look at the following resources:
+<img src="https://github.com/100percentBAKA/next-firebase-auth/blob/main/public/1s.png" width="400" alt="">
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<img src="https://github.com/100percentBAKA/next-firebase-auth/blob/main/public/2s.png" width="400" alt="Login Page">
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<img src="https://github.com/100percentBAKA/next-firebase-auth/blob/main/public/2xl.png" width="400" alt="Register Page">
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
