@@ -12,7 +12,11 @@ import { useFormik } from "formik";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "@/firebase/config/firebase";
+import {
+  auth,
+  githubProvider,
+  googleProvider,
+} from "@/firebase/config/firebase";
 import { useState } from "react";
 
 const debug = true;
@@ -21,10 +25,10 @@ function Register() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // ! single state object to handle loading
+  // Single state object to handle loading
   const [loading, setLoading] = useState({ google: false, github: false });
 
-  // ! function triggered upon clicking the google button
+  // Function triggered upon clicking the google button
   const handleGoogleSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading((prev) => ({ ...prev, google: true }));
@@ -40,19 +44,21 @@ function Register() {
         action: <ToastAction altText="close the toast">Close</ToastAction>,
       });
     } catch (err) {
-      debug && console.error(err.message);
+      if (err instanceof Error) {
+        debug && console.error(err.message);
 
-      toast({
-        title: "Authentication error",
-        description: `${err.message}`,
-        action: <ToastAction altText="auth error">Close</ToastAction>,
-      });
+        toast({
+          title: "Authentication error",
+          description: `${err.message}`,
+          action: <ToastAction altText="auth error">Close</ToastAction>,
+        });
+      }
     } finally {
       setLoading((prev) => ({ ...prev, google: false }));
     }
   };
 
-  // ! function triggered upon clicking the github button
+  // Function triggered upon clicking the github button
   const handleGithubSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading((prev) => ({ ...prev, github: true }));
@@ -69,19 +75,21 @@ function Register() {
         action: <ToastAction altText="close the toast">Close</ToastAction>,
       });
     } catch (err) {
-      debug && console.error(err.message);
+      if (err instanceof Error) {
+        debug && console.error(err.message);
 
-      toast({
-        title: "Authentication error",
-        description: `${err.message}`,
-        action: <ToastAction altText="auth error">Close</ToastAction>,
-      });
+        toast({
+          title: "Authentication error",
+          description: `${err.message}`,
+          action: <ToastAction altText="auth error">Close</ToastAction>,
+        });
+      }
     } finally {
       setLoading((prev) => ({ ...prev, github: false }));
     }
   };
 
-  // ! perform form handling here . . .
+  // Form handling
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -99,23 +107,25 @@ function Register() {
         );
 
         debug && console.log(response);
-        // ! 1) redirect the user to the root
+        // 1) Redirect the user to the root
         router.replace("/");
-        // ! 2) then display the toast
+        // 2) Display the toast
         toast({
           title: "User Registered Successfully",
           action: <ToastAction altText="close the toast">Close</ToastAction>,
         });
       } catch (err) {
-        debug && console.error(err.message);
+        if (err instanceof Error) {
+          debug && console.error(err.message);
 
-        toast({
-          title: "Authentication error",
-          description: `${err.message}`,
-          action: <ToastAction altText="auth error">Retry</ToastAction>,
-        });
+          toast({
+            title: "Authentication error",
+            description: `${err.message}`,
+            action: <ToastAction altText="auth error">Retry</ToastAction>,
+          });
+        }
       } finally {
-        // ! perform clean up here . . .
+        // Perform clean up here
         setSubmitting(false);
         resetForm();
       }
@@ -191,7 +201,7 @@ function Register() {
             className="w-full p-6 text-[15px] font-medium"
             variant="outline"
             onClick={(e) => handleGoogleSignIn(e)}
-            // ! passing the event to prevent default behavior of the form
+            // Passing the event to prevent default behavior of the form
           >
             <p className="text-black text-[15px] font-medium flex items-center gap-3">
               <FaGoogle />
@@ -201,7 +211,7 @@ function Register() {
           <Button
             className="w-full flex items-center gap-3 p-6 text-[15px] font-medium"
             onClick={(e) => handleGithubSignIn(e)}
-            // ! passing the event to prevent default behavior of the form
+            // Passing the event to prevent default behavior of the form
           >
             <FaGithub className="w-[16px] h-[16px]" />
             {loading.github ? <div className="loader"></div> : "Github"}

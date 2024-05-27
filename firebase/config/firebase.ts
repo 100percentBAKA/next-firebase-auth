@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import {
   browserLocalPersistence,
   getAuth,
+  GithubAuthProvider,
   GoogleAuthProvider,
   setPersistence,
 } from "firebase/auth";
@@ -30,5 +31,6 @@ setPersistence(auth, browserLocalPersistence);
 export { auth };
 
 export const googleProvider = new GoogleAuthProvider();
+export const githubProvider = new GithubAuthProvider();
 export const database = getFirestore(app);
 export const storage = getStorage(app);
